@@ -1,13 +1,12 @@
+import { Logo } from "@/components/logo";
+
 export function StatusNavbar() {
   return (
     <nav className="nav-blur fixed top-0 left-0 right-0 z-50 border-b border-white/[0.06]">
       <div className="mx-auto max-w-6xl px-6 h-14 flex items-center justify-between">
         {/* Logo */}
         <a href="https://xessone.com" className="flex items-center gap-2 group">
-          <span className="text-accent font-bold text-xl">X</span>
-          <span className="text-zinc-400 text-sm font-medium tracking-wide">
-            essOne
-          </span>
+          <Logo variant="full" className="text-sm text-zinc-300" />
           <span className="text-zinc-600 text-sm">|</span>
           <span className="text-zinc-300 text-sm font-medium">Status</span>
         </a>

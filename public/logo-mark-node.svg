@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" role="img" aria-label="XessOne">
+  <defs>
+    <linearGradient id="xn-grad" x1="6" y1="6" x2="26" y2="26" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#60a5fa"/>
+      <stop offset="1" stop-color="#3b82f6"/>
+    </linearGradient>
+  </defs>
+  <!-- 9 nodes forming an X shape (represents 9 XessOne global nodes) -->
+  <!-- Diagonal 1 (\) from top-left to bottom-right -->
+  <circle cx="7"  cy="7"  r="2.2" fill="url(#xn-grad)"/>
+  <circle cx="11.5" cy="11.5" r="2.2" fill="url(#xn-grad)"/>
+  <circle cx="16" cy="16" r="2.6" fill="url(#xn-grad)"/>
+  <circle cx="20.5" cy="20.5" r="2.2" fill="url(#xn-grad)"/>
+  <circle cx="25" cy="25" r="2.2" fill="url(#xn-grad)"/>
+  <!-- Diagonal 2 (/) from top-right to bottom-left (center already placed) -->
+  <circle cx="25" cy="7"  r="2.2" fill="url(#xn-grad)"/>
+  <circle cx="20.5" cy="11.5" r="2.2" fill="url(#xn-grad)"/>
+  <circle cx="11.5" cy="20.5" r="2.2" fill="url(#xn-grad)"/>
+  <circle cx="7"  cy="25" r="2.2" fill="url(#xn-grad)"/>
+</svg>

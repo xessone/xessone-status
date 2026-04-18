@@ -1,3 +1,5 @@
+import { Logo } from "@/components/logo";
+
 export function StatusFooter() {
   return (
     <footer className="mt-auto border-t border-white/[0.06] py-8 px-6">
@@ -6,10 +8,9 @@ export function StatusFooter() {
         <div className="flex items-center gap-4">
           <a
             href="https://xessone.com"
-            className="flex items-center gap-1.5 text-zinc-500 hover:text-zinc-300 transition-colors"
+            className="text-zinc-500 hover:text-zinc-300 transition-colors"
           >
-            <span className="text-accent font-bold text-sm">X</span>
-            <span className="text-xs">essOne Managed</span>
+            <Logo variant="full" wordmark="XessOne Managed" className="text-xs" />
           </a>
           <span className="text-zinc-700 text-xs">
             PT. XESS ONE GLOBAL

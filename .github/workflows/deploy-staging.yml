@@ -1,0 +1,29 @@
+name: Deploy Staging
+
+on:
+  push:
+    branches: [staging]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy to sgp1 staging
+        env:
+          SSH_KEY: ${{ secrets.STAGING_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H 45.77.37.1 >> ~/.ssh/known_hosts
+
+          rsync -az --delete \
+            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" \
+            --exclude=node_modules --exclude=.next --exclude=.git \
+            --exclude=bun.lock --exclude='.env*' \
+            ./ root@45.77.37.1:/opt/staging/xessone/status/
+
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no root@45.77.37.1 \
+            "cd /opt/staging/xessone/status && bun install && bun run build && systemctl restart xessone-status-staging && systemctl is-active xessone-status-staging"

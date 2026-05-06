@@ -22,8 +22,8 @@ jobs:
           rsync -az --delete \
             -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" \
             --exclude=node_modules --exclude=.next --exclude=.git \
-            --exclude=bun.lock --exclude='.env*' \
+            --exclude=bun.lock --exclude='.env*' --exclude=data \
             ./ root@45.77.37.1:/opt/staging/xessone/status/
 
           ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no root@45.77.37.1 \
-            "cd /opt/staging/xessone/status && bun install && bun run build && systemctl restart xessone-status-staging && systemctl is-active xessone-status-staging"
+            "export PATH=/root/.bun/bin:\$PATH && cd /opt/staging/xessone/status && bun install && bun run build && systemctl restart xessone-status-staging && systemctl is-active xessone-status-staging"

@@ -1,0 +1,73 @@
+name: Security audit
+
+# bun audit on every push + PR + weekly. Fails on critical/high.
+# Email-on-failure via GitHub default notifications.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "package.json"
+      - "bun.lock"
+      - "bun.lockb"
+      - ".github/workflows/security-audit.yml"
+  pull_request:
+    branches: [main]
+  schedule:
+    # Mondays 06:00 UTC (= 13:00 WIB)
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+concurrency:
+  group: security-audit-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    name: bun audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Run bun audit
+        run: |
+          set +e
+          bun audit --json > audit.json 2>&1
+          set -e
+
+          head -c 4000 audit.json || true
+          echo ""
+
+          CRITICAL=$(jq -r '.vulnerabilities.critical // 0' audit.json 2>/dev/null || echo 0)
+          HIGH=$(jq -r '.vulnerabilities.high // 0' audit.json 2>/dev/null || echo 0)
+          MODERATE=$(jq -r '.vulnerabilities.moderate // 0' audit.json 2>/dev/null || echo 0)
+          LOW=$(jq -r '.vulnerabilities.low // 0' audit.json 2>/dev/null || echo 0)
+
+          echo "=== summary ==="
+          echo "critical: $CRITICAL"
+          echo "high:     $HIGH"
+          echo "moderate: $MODERATE"
+          echo "low:      $LOW"
+
+          if [ "$CRITICAL" -gt 0 ] || [ "$HIGH" -gt 0 ]; then
+            echo "::error::Found $CRITICAL critical + $HIGH high vulnerabilities — run 'bun update' and re-audit."
+            exit 1
+          fi
+
+          if [ "$MODERATE" -gt 0 ] || [ "$LOW" -gt 0 ]; then
+            echo "::warning::Found $MODERATE moderate + $LOW low vulnerabilities — review when convenient."
+          fi
+
+      - name: Upload full audit JSON
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bun-audit-${{ github.run_id }}
+          path: audit.json
+          retention-days: 30

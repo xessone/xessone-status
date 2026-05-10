@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# XessOne Status
 
-## Getting Started
+Halaman status real-time untuk platform XessOne — monitoring uptime 9 node global dan layanan utama.
 
-First, run the development server:
+🌐 **[status.xessone.com](https://status.xessone.com)**
+
+---
+
+## Fitur
+
+- ✅ Status uptime per node (SGP, LAX, FRA, NRT, SYD, EWR, ORD, + 2)
+- 📡 Monitoring layanan: Dashboard, SSO, AI Gateway, Mail, DNS
+- 🕒 Histori incident
+- 🔔 Publik — tidak perlu login
+
+## Tech Stack
+
+- **Runtime:** Bun
+- **Framework:** Next.js 16
+- **Deploy:** sgp1, port 3003
+
+## Setup Lokal
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/xessone/xessone-status.git
+cd xessone-status
+bun install
+bun run dev  # http://localhost:3003
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Deploy
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+ssh root@45.77.37.1 "cd /opt/xessone/status && git pull && bun install && bun run build && systemctl restart xessone-status"
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Server: `root@45.77.37.1` | Path: `/opt/xessone/status` | Service: `xessone-status` | Port: `3003`
 
-## Learn More
+## Lisensi
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Proprietary — © [XessOne](https://xessone.com). All rights reserved.
